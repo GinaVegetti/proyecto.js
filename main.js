@@ -1,10 +1,11 @@
+// reservaTurnos.js
 function mostrarHorariosDisponibles(horarios) {
     console.log("Horarios disponibles: " + horarios.join(", "));
 }
 
 function reservarTurno(horariosDisponibles) {
     let seleccion = prompt("Ingrese la hora que desea reservar (ejemplo: 10):");
-
+    
     // Validar la entrada
     if (!seleccion) {
         alert("Ingresó un valor no válido. La reserva ha sido cancelada.");
@@ -14,9 +15,17 @@ function reservarTurno(horariosDisponibles) {
     let horaSeleccionada = parseInt(seleccion);
 
     // Verificar si la hora está disponible
-    if (horariosDisponibles.includes(horaSeleccionada)) {
+    let indice = -1;
+    for (let i = 0; i < horariosDisponibles.length; i++) {
+        if (horariosDisponibles[i] === horaSeleccionada) {
+            indice = i;
+            break;
+        }
+    }
+
+    if (indice !== -1) {
         // Reservar el turno
-        horariosDisponibles = horariosDisponibles.filter(hora => hora !== horaSeleccionada);
+        horariosDisponibles.splice(indice, 1);
         alert(`Turno reservado para las ${horaSeleccionada}:00 horas.`);
     } else {
         alert(`La ${horaSeleccionada}:00 horas no está disponible.`);

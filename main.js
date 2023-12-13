@@ -1,31 +1,38 @@
+function mostrarHorariosDisponibles(horarios) {
+    console.log("Horarios disponibles: " + horarios.join(", "));
+}
 
-// Variables globales
-let horariosDisponibles = [10, 11, 12, 13, 14]; // Ejemplo de horarios disponibles
-let horariosOcupados = [];
-let contador = 0;
+function reservarTurno(horariosDisponibles) {
+    let seleccion = prompt("Ingrese la hora que desea reservar (ejemplo: 10):");
 
-function reservarTurno(hora) {
-    // Verificar si la hora está disponible
-    if (horariosDisponibles.includes(hora)) {
-        // Reservar el turno
-        horariosOcupados.push(hora);
-        // Actualizar horarios disponibles
-        horariosDisponibles = horariosDisponibles.filter(h => h !== hora);
-        console.log(`Turno reservado para las ${hora} horas.`);
-    } else {
-        console.log(`La ${hora} horas no está disponible.`);
+    // Validar la entrada
+    if (!seleccion) {
+        alert("Ingresó un valor no válido. La reserva ha sido cancelada.");
+        return;
     }
+
+    let horaSeleccionada = parseInt(seleccion);
+
+    // Verificar si la hora está disponible
+    if (horariosDisponibles.includes(horaSeleccionada)) {
+        // Reservar el turno
+        horariosDisponibles = horariosDisponibles.filter(hora => hora !== horaSeleccionada);
+        alert(`Turno reservado para las ${horaSeleccionada}:00 horas.`);
+    } else {
+        alert(`La ${horaSeleccionada}:00 horas no está disponible.`);
+    }
+
+    // Mostrar horarios actualizados
+    mostrarHorariosDisponibles(horariosDisponibles);
 }
 
-function mostrarHorarios() {
-    console.log("Horarios disponibles: " + horariosDisponibles.join(", "));
-    console.log("Horarios ocupados: " + horariosOcupados.join(", "));
+function realizarReserva() {
+    // Horarios disponibles inicialmente
+    let horariosDisponibles = [10, 11, 12, 13, 14];
+
+    // Mostrar horarios disponibles al inicio
+    mostrarHorariosDisponibles(horariosDisponibles);
+
+    // Realizar reserva
+    reservarTurno(horariosDisponibles);
 }
-
-// Simular reservas
-reservarTurno(11);
-reservarTurno(13);
-reservarTurno(14);
-
-// Mostrar horarios después de las reservas
-mostrarHorarios();

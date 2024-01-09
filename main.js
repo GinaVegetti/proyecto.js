@@ -1,11 +1,40 @@
-// reservaTurnos.js
+// Variables
+let doctores = [
+    { id: 1, nombre: "Perez"},
+    { id: 2, nombre: "Gomez" },
+];
+
+// Funciones relacionadas con doctores
+function mostrarDoctores() {
+    console.log("Listado de Doctores:");
+    doctores.forEach(doctor => {
+        console.log(`ID: ${doctor.id}, Nombre: ${doctor.nombre}`);
+    });
+}
+
+function buscarDoctorPorNombre(nombre) {
+    return doctores.find(doctor => doctor.nombre === nombre);
+}
+
+// Ejemplo de captura de entradas mediante prompt (simulado)
+const nombreDoctorSeleccionado = prompt("Ingrese el nombre del doctor:");
+const doctorSeleccionado = buscarDoctorPorNombre(nombreDoctorSeleccionado);
+
+// Ejemplo de salida mediante console.log (simulado)
+if (doctorSeleccionado) {
+    alert(`Doctor seleccionado: ${doctorSeleccionado.nombre}`);
+} else {
+    alert("Doctor no encontrado");
+}
+
+// Funciones relacionadas con la reserva de turnos
 function mostrarHorariosDisponibles(horarios) {
-    console.log("Horarios disponibles: " + horarios.join(", "));
+    alert("Horarios disponibles: " + horarios.join(", "));
 }
 
 function reservarTurno(horariosDisponibles) {
     let seleccion = prompt("Ingrese la hora que desea reservar (ejemplo: 10):");
-    
+
     // Validar la entrada
     if (!seleccion) {
         alert("Ingresó un valor no válido. La reserva ha sido cancelada.");
@@ -15,14 +44,7 @@ function reservarTurno(horariosDisponibles) {
     let horaSeleccionada = parseInt(seleccion);
 
     // Verificar si la hora está disponible
-    let indice = -1;
-    for (let i = 0; i < horariosDisponibles.length; i++) {
-        if (horariosDisponibles[i] === horaSeleccionada) {
-            indice = i;
-            break;
-        }
-    }
-
+    let indice = horariosDisponibles.indexOf(horaSeleccionada);
     if (indice !== -1) {
         // Reservar el turno
         horariosDisponibles.splice(indice, 1);
@@ -45,3 +67,4 @@ function realizarReserva() {
     // Realizar reserva
     reservarTurno(horariosDisponibles);
 }
+

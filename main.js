@@ -53,7 +53,7 @@ function reservarTurno(horariosDisponibles) {
     
         // Reservar el turno
         horariosDisponibles.splice(indice, 1);
-        alert(`Turno reservado para las ${horaSeleccionada}:00 horas.`);
+        alert(`Turno reservado para las ${horaSeleccionada}:00 horas, con el dr. ${doctorSeleccionado.nombre}`);
     } else {
         alert(`La ${horaSeleccionada}:00 horas no está disponible.`);
     }

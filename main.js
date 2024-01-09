@@ -1,9 +1,8 @@
 // Variables
 let doctores = [
-    { id: 1, nombre: "Perez"},
+    { id: 1, nombre: "Perez" },
     { id: 2, nombre: "Gomez" },
 ];
-
 // Funciones relacionadas con doctores
 function mostrarDoctores() {
     console.log("Listado de Doctores:");
@@ -13,18 +12,16 @@ function mostrarDoctores() {
 }
 
 function buscarDoctorPorNombre(nombre) {
-    return doctores.find(doctor => doctor.nombre === nombre);
+    return doctores.find(doctor => doctor.nombre == nombre);
 }
 
-// Ejemplo de captura de entradas mediante prompt (simulado)
-const nombreDoctorSeleccionado = prompt("Ingrese el nombre del doctor:");
+const nombreDoctorSeleccionado = prompt("Ingrese el apellido del doctor para confirmar seleccion:");
 const doctorSeleccionado = buscarDoctorPorNombre(nombreDoctorSeleccionado);
 
-// Ejemplo de salida mediante console.log (simulado)
 if (doctorSeleccionado) {
     alert(`Doctor seleccionado: ${doctorSeleccionado.nombre}`);
 } else {
-    alert("Doctor no encontrado");
+    alert("Doctor no seleccionado");
 }
 
 // Funciones relacionadas con la reserva de turnos
@@ -67,4 +64,3 @@ function realizarReserva() {
     // Realizar reserva
     reservarTurno(horariosDisponibles);
 }
-

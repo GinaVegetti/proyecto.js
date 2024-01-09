@@ -12,7 +12,7 @@ function mostrarDoctores() {
 }
 
 function buscarDoctorPorNombre(nombre) {
-    return doctores.find(doctor => doctor.nombre == nombre);
+    return doctores.find(doctor => doctor.nombre.toLowerCase() === nombre);
 }
 
 const nombreDoctorSeleccionado = prompt("Ingrese el apellido del doctor para confirmar seleccion:");
@@ -40,9 +40,17 @@ function reservarTurno(horariosDisponibles) {
 
     let horaSeleccionada = parseInt(seleccion);
 
+    // Validar que la hora ingresada sea un número y esté dentro del rango de horas disponibles
+    if (isNaN(horaSeleccionada) || horaSeleccionada < 10 || horaSeleccionada > 14) {
+        alert("La hora ingresada no es válida. La reserva ha sido cancelada.");
+        return;
+    }
+
     // Verificar si la hora está disponible
     let indice = horariosDisponibles.indexOf(horaSeleccionada);
     if (indice !== -1) {
+    
+    
         // Reservar el turno
         horariosDisponibles.splice(indice, 1);
         alert(`Turno reservado para las ${horaSeleccionada}:00 horas.`);

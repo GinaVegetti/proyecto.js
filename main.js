@@ -1,74 +1,94 @@
-// Variables
+let boton = document.getElementById("boton");
+boton.addEventListener("click", mostrarDoctoresEnDOM);
+
 let doctores = [
-    { id: 1, nombre: "Perez" },
-    { id: 2, nombre: "Gomez" },
+    {
+        id: 1,
+        nombre: "Dr. Perez",
+        especialidad: "Clínica General",
+        descripcion: "Médico con amplia experiencia en atención general.",
+        imagen: "./img/perez.jpg"
+    },
+    {
+        id: 2,
+        nombre: "Dra. Gomez",
+        especialidad: "Pediatría",
+        descripcion: "Especialista en cuidado infantil.",
+        imagen: "./img/gomez.jpg"
+    },
 ];
-// Funciones relacionadas con doctores
-function mostrarDoctores() {
-    console.log("Listado de Doctores:");
+
+let horariosDisponibles = [10, 11, 12, 13, 14];
+const resultadosElement = document.getElementById("resultados");
+let doctorSeleccionado = null;
+
+function mostrarHorariosDisponiblesEnDOM() {
+    resultadosElement.innerHTML = "Horarios disponibles: " + horariosDisponibles.join(", ");
+}
+
+function mostrarDoctoresEnDOM() {
+    resultadosElement.innerHTML = ""; // Limpiar el contenido actual
     doctores.forEach(doctor => {
-        console.log(`ID: ${doctor.id}, Nombre: ${doctor.nombre}`);
+        resultadosElement.innerHTML += `
+            <div class="ficha-doctor">
+                <img src="${doctor.imagen}" alt="${doctor.nombre}">
+                <h3>${doctor.nombre}</h3>
+                <p>${doctor.especialidad}</p>
+                <p>${doctor.descripcion}</p>
+                <button onclick="elegirDoctor(${doctor.id})">Seleccionar ${doctor.nombre}</button>
+            </div>
+        `;
     });
 }
 
-function buscarDoctorPorNombre(nombre) {
-    return doctores.find(doctor => doctor.nombre.toLowerCase() === nombre);
+function mostrarResultadoEnDOM(resultado) {
+    resultadosElement.innerHTML = resultado;
 }
 
-const nombreDoctorSeleccionado = prompt("Ingrese el apellido del doctor para confirmar seleccion:");
-const doctorSeleccionado = buscarDoctorPorNombre(nombreDoctorSeleccionado);
+function elegirDoctor(doctorId) {
+    doctorSeleccionado = doctores.find(doctor => doctor.id === doctorId);
 
-if (doctorSeleccionado) {
-    alert(`Doctor seleccionado: ${doctorSeleccionado.nombre}`);
-} else {
-    alert("Doctor no seleccionado");
+    mostrarHorariosDisponiblesEnDOM();
+
+    resultadosElement.innerHTML += `<br>Seleccione un horario: <select id="selectHorario"></select>`;
+    const selectHorario = document.getElementById("selectHorario");
+
+    horariosDisponibles.forEach(horario => {
+        const option = document.createElement("option");
+        option.value = horario;
+        option.textContent = `${horario}:00 horas`;
+        selectHorario.appendChild(option);
+    });
+
+    resultadosElement.innerHTML += `<br><button onclick="reservarTurnoEnDOM()">Reservar Turno</button>`;
 }
 
-// Funciones relacionadas con la reserva de turnos
-function mostrarHorariosDisponibles(horarios) {
-    alert("Horarios disponibles: " + horarios.join(", "));
-}
+function reservarTurnoEnDOM() {
+    const selectHorario = document.getElementById("selectHorario");
+    const horaSeleccionada = parseInt(selectHorario.value);
 
-function reservarTurno(horariosDisponibles) {
-    let seleccion = prompt("Ingrese la hora que desea reservar (ejemplo: 10):");
+    if (doctorSeleccionado) {
+        const doctorSeleccionadoIndex = doctores.findIndex(doctor => doctor.id === doctorSeleccionado.id);
+        doctores.splice(doctorSeleccionadoIndex, 1);
 
-    // Validar la entrada
-    if (!seleccion) {
-        alert("Ingresó un valor no válido. La reserva ha sido cancelada.");
-        return;
-    }
+        const horarioIndex = horariosDisponibles.indexOf(horaSeleccionada);
+        horariosDisponibles.splice(horarioIndex, 1);
 
-    let horaSeleccionada = parseInt(seleccion);
+        mostrarResultadoEnDOM(`Turno reservado para las ${horaSeleccionada}:00 horas, con el Dr. ${doctorSeleccionado.nombre}`);
+        mostrarHorariosDisponiblesEnDOM();
 
-    // Validar que la hora ingresada sea un número y esté dentro del rango de horas disponibles
-    if (isNaN(horaSeleccionada) || horaSeleccionada < 10 || horaSeleccionada > 14) {
-        alert("La hora ingresada no es válida. La reserva ha sido cancelada.");
-        return;
-    }
+        const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+        carrito.push({ doctor: doctorSeleccionado.nombre, hora: horaSeleccionada });
+        localStorage.setItem("carrito", JSON.stringify(carrito));
 
-    // Verificar si la hora está disponible
-    let indice = horariosDisponibles.indexOf(horaSeleccionada);
-    if (indice !== -1) {
-    
-    
-        // Reservar el turno
-        horariosDisponibles.splice(indice, 1);
-        alert(`Turno reservado para las ${horaSeleccionada}:00 horas, con el dr. ${doctorSeleccionado.nombre}`);
+        // Llama a la función de redirección después de completar el proceso de reserva
+        redirigirACarrito();
     } else {
-        alert(`La ${horaSeleccionada}:00 horas no está disponible.`);
+        mostrarResultadoEnDOM("Error: Seleccione un doctor antes de reservar.");
     }
-
-    // Mostrar horarios actualizados
-    mostrarHorariosDisponibles(horariosDisponibles);
 }
 
-function realizarReserva() {
-    // Horarios disponibles inicialmente
-    let horariosDisponibles = [10, 11, 12, 13, 14];
-
-    // Mostrar horarios disponibles al inicio
-    mostrarHorariosDisponibles(horariosDisponibles);
-
-    // Realizar reserva
-    reservarTurno(horariosDisponibles);
+function redirigirACarrito() {
+    // Redirige a la página del carrito al final del proceso
+    window.location.href = "./pages/reservas.html";
 }

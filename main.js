@@ -27,7 +27,8 @@ function mostrarHorariosDisponiblesEnDOM() {
 }
 
 function mostrarDoctoresEnDOM() {
-    resultadosElement.innerHTML = ""; // Limpiar el contenido actual
+    boton.style.display = 'none';
+
     doctores.forEach(doctor => {
         resultadosElement.innerHTML += `
             <div class="ficha-doctor">
@@ -74,21 +75,37 @@ function reservarTurnoEnDOM() {
         const horarioIndex = horariosDisponibles.indexOf(horaSeleccionada);
         horariosDisponibles.splice(horarioIndex, 1);
 
-        mostrarResultadoEnDOM(`Turno reservado para las ${horaSeleccionada}:00 horas, con el Dr. ${doctorSeleccionado.nombre}`);
+        const mensaje = `Turno reservado para las ${horaSeleccionada}:00 horas, con ${doctorSeleccionado.nombre}`;
+
+        Swal.fire({
+            title: '¡Reserva Confirmada!',
+            text: mensaje,
+            icon: 'success',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ir a reservas',
+            cancelButtonText: 'Seguir reservando'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "./pages/reservas.html";
+            } else {
+
+            }
+        });
+
         mostrarHorariosDisponiblesEnDOM();
 
         const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
         carrito.push({ doctor: doctorSeleccionado.nombre, hora: horaSeleccionada });
         localStorage.setItem("carrito", JSON.stringify(carrito));
-
-        // Llama a la función de redirección después de completar el proceso de reserva
-        redirigirACarrito();
     } else {
         mostrarResultadoEnDOM("Error: Seleccione un doctor antes de reservar.");
     }
 }
 
-function redirigirACarrito() {
-    // Redirige a la página del carrito al final del proceso
+function realizarReserva() {
+    mostrarDoctoresEnDOM();
+
     window.location.href = "./pages/reservas.html";
 }

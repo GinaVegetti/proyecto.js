@@ -3,16 +3,16 @@
         {
             "id": 1,
             "nombre": "Dr. Perez",
-            "especialidad": "Clínica General",
+            "especialidad": "Medicina General",
             "descripcion": "Médico con amplia experiencia en atención general.",
-            "imagen": "./img/perez.jpg"
+            "imagen": "../img/perez.jpg"
         },
         {
             "id": 2,
             "nombre": "Dra. Gomez",
             "especialidad": "Pediatría",
             "descripcion": "Especialista en cuidado infantil.",
-            "imagen": "./img/gomez.jpg"
+            "imagen": "../img/gomez.jpg"
         }
     ]
 }

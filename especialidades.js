@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function mostrarFichasMedicas(especialidad) {
-    fetch('/profecionales.js') 
+    fetch('/profecionales.json') 
         .then(response => response.json())
         .then(data => {
             var doctoresEspecialidad = data.doctores.filter(doctor => doctor.especialidad.toLowerCase() === especialidad.toLowerCase());

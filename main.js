@@ -11,7 +11,7 @@ function mostrarHorariosDisponiblesEnDOM() {
 }
 
 function cargarDoctores() {
-    fetch('profecionales.js') 
+    fetch('profecionales.json') 
         .then(response => response.json())
         .then(data => {
             doctores = data.doctores; 
@@ -108,7 +108,7 @@ function reservarTurnoEnDOM(doctorId) {
         });
 
         mostrarHorariosDisponiblesEnDOM();
-        
+
         const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
         carrito.push({ doctor: doctorSeleccionado.nombre, hora: horaSeleccionada });
         localStorage.setItem("carrito", JSON.stringify(carrito));
